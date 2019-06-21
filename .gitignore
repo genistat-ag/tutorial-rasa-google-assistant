@@ -1,0 +1,21 @@
+# JetBrains
+.idea/
+
+# Virtualenv
+/bin/
+/include/
+/lib/
+/virtualenv/
+/.venv/
+
+# Python
+__pycache__/
+
+# OSX
+.DS_Store
+
+# Models
+/models/
+
+# Google gactions Credentials
+creds.data

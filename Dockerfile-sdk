@@ -1,0 +1,4 @@
+FROM rasa/rasa-sdk:1.0.0
+MAINTAINER Eric Marty <eric.marty@genistat.ch>
+
+COPY actions /app/actions

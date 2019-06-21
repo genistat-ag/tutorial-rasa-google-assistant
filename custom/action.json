@@ -1,0 +1,44 @@
+{
+  "actions": [
+    {
+      "description": "Default Welcome Intent",
+      "name": "MAIN",
+      "fulfillment": {
+        "conversationName": "welcome_intent"
+      },
+      "intent": {
+        "name": "actions.intent.MAIN",
+        "trigger": {
+          "queryPatterns": [
+            "talk to Example Chatbot"
+          ]
+        }
+      }
+    },
+    {
+      "description": "Rasa Intent",
+      "name": "TEXT",
+      "fulfillment": {
+        "conversationName": "rasa_intent"
+      },
+      "intent": {
+        "name": "actions.intent.TEXT",
+        "trigger": {
+          "queryPatterns": []
+        }
+      }
+    }
+  ],
+  "conversations": {
+    "welcome_intent": {
+      "name": "welcome_intent",
+      "url": "https://yourdomain.com/webhooks/google_assistant/webhook",
+      "fulfillmentApiVersion": 2
+    },
+    "rasa_intent": {
+      "name": "rasa_intent",
+      "url": "https://yourdomain.com/webhooks/google_assistant/webhook",
+      "fulfillmentApiVersion": 2
+    }
+  }
+}

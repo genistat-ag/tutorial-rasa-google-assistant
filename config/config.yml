@@ -1,0 +1,18 @@
+language: "en"
+pipeline: "pretrained_embeddings_spacy"
+
+policies:
+  # Keras Policy - Use trained neural network to guess next action given an intent
+  - name: KerasPolicy
+    epochs: 500
+    # Let Keras use the last {max_history} states to determine the next action
+    max_history: 3
+  # FallbackPolicy - If no other policy produces a guess above a given threshold
+  - name: FallbackPolicy
+    nlu_threshold: 0.6
+    core_threshold: 0.6
+    fallback_action_name: "action_default_fallback"
+  # MemoizationPolicy - If the last {max_history} states appear in a training example story
+  # choose the next action according to that story with probability 1.00.
+  - name: MemoizationPolicy
+    max_history: 3
