@@ -1,0 +1,9 @@
+# If the rasa/rasa image version is updated also update the version in the train.sh file!
+FROM rasa/rasa:1.0.1-spacy-en
+MAINTAINER Eric Marty <eric.marty@genistat.ch>
+
+COPY models /app/models
+COPY config /app/config
+COPY custom /app/custom
+
+ENV PYTHONPATH="$PYTHONPATH:/app"

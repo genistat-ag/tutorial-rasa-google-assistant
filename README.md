@@ -1,18 +1,38 @@
-# Tutorial: Going beyond ‘Hey Google’: building a Rasa-powered Google Assistant
+# Google Assistant for Rasa with docker-compose
+This is heavily based on the official Rasa [tutorial](https://blog.rasa.com/going-beyond-hey-google-building-a-rasa-powered-google-assistant/). I assume that you are familiar with Rasa, the mentioned tutorial and docker-compose.
 
-This repository contains the code of the tutorial of connecting Rasa-powered assistant to Google Assistant. You can find the step-by-step tutorial here.
+## Google Assistant Bot
+As the Google Assistant integration is not a default channel in Rasa it has to be added as a [custom channel](https://rasa.com/docs/rasa/user-guide/connectors/custom-connectors/).
+
+### What it can and cannot do?
+The Google Assistant implementation is functionally working for text based interactions but is crashing as soon as the chatbot returns anything other than text. E.g. when it tries to return custom JSON. So one would have to implement a proper OutputChannel as is already present for e.g. [Telegram](https://github.com/RasaHQ/rasa/blob/master/rasa/core/channels/telegram.py), with the code skeleton that is already present in `custom/google_assistant_channel.py`.
+
+For now we just collect all message like we do in the [CollectingOutputChannel](https://github.com/RasaHQ/rasa/blob/master/rasa/core/channels/channel.py#L275).
+
+These resources will be of help, if you plan on going further with the implementation. Feel free to fork this repository and work further on it:
+* https://developers.google.com/actions/assistant/responses - Response API
+* https://developers.google.com/actions/reference/ssml - SSML language reference
+* https://github.com/sumsted/pyssml - Python Package for SSML generation
 
 ## What's in this repository?
-
 This repository consists of the following files and directories:  
-- **place_finder** - a directory which contains a pre-built Rasa assistant called Place Finder. This assistant is used in this tutorial to demonstrate the integration to Google Assistant.
-- **action.json** - a custom Google Assistant action configuration file.
-- **ga_connector.py** - a custom Rasa-Google Assistant connector. If you follow the tutorial using your own assistant, add this connector to your project directory.
+- **actions** - The Package with your custom Rasa Actions
+- **config** - Your Rasa configuration files (e.g. config.yml, domain.yml and endpoints.yml)
+- **custom** - The Google Assistant Connector Package
+- **data** - The training data for the Rasa NLU and Core (.md files)
+- **secrets** - Your secrets files (e.g. credentials.yml)
 
-## How to use this repository?
+## Train model
+To train the model simply run the `train.sh` script and watch the output for errors.
 
-The best way to use this repository is to follow a step-by-step tutorial on how to integrate the Rasa assistant to Google Assistant. If you choose to use a Place Finder assistant to follow the tutorial, you can find the installation instructions and requirements.txt file inside the **place_finder** directory of this repository.
+## Run Bot locally
+To run the bot locally you first have to train the model, see the "Train Model" section. Then you will have to setup a public domain with e.g. `ngrok http 5005` which links a public domain to localhost:5005.
 
-## Let us know how you are getting on!
+For the next steps you need to set up a Google Actions Project as described in the official Rasa [tutorial](https://blog.rasa.com/going-beyond-hey-google-building-a-rasa-powered-google-assistant/).
 
-If you have any questions about this tutorial or this repository, feel free to share them on [Rasa Community Forum](https://forum.rasa.com). 
+Then update the ngrok domains in `custom/action.json` and use
+```
+gactions update --action_package custom/action.json --project example-chatbot
+gactions test --action_package custom/action.json --project example-chatbot
+``` 
+to push the action changes to the test setup of Google. The last step you will have repeat with every change in the domain.

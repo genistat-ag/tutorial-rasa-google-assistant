@@ -1,0 +1,33 @@
+version: '3.2'
+services:
+  rasa:
+    image: example-chatbot-rasa:development
+    build:
+      context: .
+      dockerfile: Dockerfile-rasa
+    ports:
+      - 5005:5005
+    volumes:
+      - ./models:/app/models
+      - ./config:/app/config
+      - ./custom:/app/custom
+      - ./secrets:/app/secrets
+    command:
+      - run
+      - --model
+      - models
+      - --endpoints
+      - config/endpoints.yml
+      - --credentials
+      - secrets/credentials.yml
+      - --debug
+    depends_on:
+      - sdk
+
+  sdk:
+    image: example-chatbot-sdk:development
+    build:
+      context: .
+      dockerfile: Dockerfile-sdk
+    volumes:
+      - ./actions:/app/actions

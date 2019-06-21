@@ -1,0 +1,17 @@
+intents:
+  - greet
+  - goodby
+
+actions:
+  # Utterances based on templates
+  - utter_example
+  # Custom actions that run on the SDK server
+  - action_example
+
+templates:
+  # Default answer if the bot does not recognise the user message
+  utter_default:
+    - text: "Sorry I did not get that, could you please try and rephrase that."
+  # Custom defined utterances
+  utter_example:
+    - text: "This is an example, replace me with an actual utterance."
