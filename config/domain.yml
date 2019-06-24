@@ -1,6 +1,6 @@
 intents:
   - greet
-  - goodby
+  - goodbye
 
 actions:
   # Utterances based on templates
